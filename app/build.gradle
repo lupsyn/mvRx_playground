@@ -1,0 +1,114 @@
+import com.playground.Libs
+
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+kapt {
+    correctErrorTypes = true
+}
+apply plugin: 'kotlin-android-extensions'
+androidExtensions {
+    experimental = true
+}
+
+android {
+    compileSdkVersion 28
+
+    defaultConfig {
+        applicationId "app.punk"
+        minSdkVersion buildConfig.minSdk
+        targetSdkVersion buildConfig.targetSdk
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    lintOptions {
+        // Disable lintVital. Not needed since lint is run on CI
+        checkReleaseBuilds false
+        // Allow lint to check dependencies
+        checkDependencies true
+        // Ignore any tests
+        ignoreTestSources true
+
+        disable 'GradleCompatible', 'FontValidationError'
+    }
+
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
+
+    packagingOptions {
+        // Exclude AndroidX version files
+        exclude 'META-INF/*.version'
+        // Exclude consumer proguard files
+        exclude 'META-INF/proguard/*'
+        // Exclude the Firebase/Fabric/other random properties files
+        exclude '/*.properties'
+        exclude 'fabric/*.properties'
+        exclude 'META-INF/*.properties'
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation Libs.Kotlin.stdlib
+    implementation Libs.Coroutines.core
+    implementation Libs.Coroutines.rx2
+    implementation Libs.Coroutines.android
+
+    implementation Libs.AndroidX.Lifecycle.extensions
+
+    implementation Libs.AndroidX.appcompat
+    implementation Libs.AndroidX.recyclerview
+    implementation Libs.AndroidX.constraintlayout
+    implementation Libs.AndroidX.coreKtx
+    implementation Libs.AndroidX.Fragment.fragmentKtx
+
+    implementation Libs.AndroidX.Navigation.runtime
+    implementation Libs.AndroidX.Navigation.fragment
+    implementation Libs.AndroidX.Navigation.ui
+
+    implementation Libs.mvRx
+
+    implementation Libs.RxJava.rxJava
+    implementation Libs.RxJava.rxKotlin
+    implementation Libs.RxJava.rxAndroid
+
+    implementation Libs.Retrofit.moshiConverter
+    implementation Libs.Retrofit.retrofit_rxjava_adapter
+
+    implementation Libs.Google.material
+
+    implementation Libs.Moshi.moshi
+    kapt Libs.Moshi.moshi_kotlin_code_gen
+
+    implementation Libs.Epoxy.epoxy
+    implementation Libs.Epoxy.paging
+    implementation Libs.Epoxy.dataBinding
+    kapt Libs.Epoxy.processor
+
+    testImplementation Libs.junit
+    testImplementation Libs.robolectric
+    testImplementation Libs.mockitoKotlin
+    testImplementation Libs.AndroidX.Test.core
+    testImplementation Libs.AndroidX.Test.runner
+    testImplementation Libs.AndroidX.Test.rules
+    testImplementation Libs.AndroidX.Test.espressoCore
+
+}
