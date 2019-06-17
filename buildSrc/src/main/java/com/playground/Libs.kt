@@ -15,6 +15,11 @@ object Libs {
 
     val mockitoKotlin = "com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0"
 
+    object Mockito{
+        private const val mockitoVersion="2.24.0"
+        val core ="org.mockito:mockito-core:${mockitoVersion}"
+    }
+
     object Google {
         private const val gsonVersion = "2.7"
         val material = "com.google.android.material:material:1.1.0-alpha04"
