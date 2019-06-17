@@ -2,21 +2,25 @@ package com.playground.data
 
 import com.playground.base.TestBase
 import com.playground.data.db.GitHubResponsesDao
+import com.playground.data.db.GitHubResponsesEntity
 import com.playground.data.db.utils.TimeProvider
 import com.playground.models.GitRepo
+import com.playground.network.CacheExpirationTime.MINUTE_TO_MILLISECONDS
 import com.playground.network.GitHubService
 import com.tui.tda.test.KotlinTypeSafeMatchers
+import com.tui.tda.test.KotlinTypeSafeMatchers.any
 import io.reactivex.Single
+import org.bouncycastle.asn1.eac.EACTags.COUNTRY_CODE
 import org.junit.Before
 import org.junit.Test
-import org.mockito.BDDMockito.given
-import org.mockito.BDDMockito.verify
+import org.mockito.ArgumentMatchers
+import org.mockito.ArgumentMatchers.*
+import org.mockito.BDDMockito.*
 import org.mockito.Mock
-import org.mockito.Mockito
 import java.net.UnknownHostException
 
-private const val EXPIRED_TIME = (40 * 1000).toLong()
-private const val CURRENT_TIME = (10 * 1000).toLong()
+private const val EXPIRED_TIME = (40 * MINUTE_TO_MILLISECONDS).toLong()
+private const val CURRENT_TIME = (10 * MINUTE_TO_MILLISECONDS).toLong()
 private const val DEFAULT_PAGE = 0
 private const val ORGANIZATION = "square"
 
@@ -29,9 +33,12 @@ class GitHubRepositoryImplTest : TestBase() {
     private lateinit var timeProvider: TimeProvider
     @Mock
     private lateinit var response: List<GitRepo>
+    @Mock
+    private lateinit var gitHubResponseEntity: GitHubResponsesEntity
 
     private lateinit var underTest: GitHubRepositoryImpl
     private val request = GitHubRepositoryImpl.GitHubRepositoryRequest(ORGANIZATION, DEFAULT_PAGE)
+
 
     private fun genericError(): Throwable = UnknownHostException("Unknown host")
 
@@ -46,14 +53,40 @@ class GitHubRepositoryImplTest : TestBase() {
         whenSearchThrowException(genericError())
         whenAskingForNetworkWillReturn(ORGANIZATION, DEFAULT_PAGE, Single.just(response))
 
-        underTest.fetchRepositories(ORGANIZATION, DEFAULT_PAGE).test()
+        underTest.fetchRepositories(ORGANIZATION, DEFAULT_PAGE)
+            .test()
 
         verify(api).fetchRepositories(ORGANIZATION, page = DEFAULT_PAGE)
-        verify(dao).saveResponseEntity(KotlinTypeSafeMatchers.any())
+        verify(dao).saveResponseEntity(any())
+    }
+
+    @Test
+    fun shouldCallApiAndSaveResponseWhenDbEntityExpired() {
+
+        whenAskingForNetworkWillReturn(ORGANIZATION, DEFAULT_PAGE, Single.just(response))
+        whenLocalStorageHasSearchResponse(gitHubResponseEntity, expiredTime = true)
+
+        underTest.fetchRepositories(ORGANIZATION, DEFAULT_PAGE)
+            .test()
+            .assertValue(response)
+            .assertComplete()
+
+        verify(api).fetchRepositories(ORGANIZATION, page = DEFAULT_PAGE)
+        verify(dao).saveResponseEntity(any())
     }
 
     private fun whenSearchThrowException(error: Throwable) {
-        given(dao.getResponseEntity(request.hashCode())).willReturn(Single.error(error))
+        given(dao.getResponseEntity(anyInt())).willReturn(Single.error(error))
+    }
+
+    private fun whenLocalStorageHasSearchResponse(
+        gitHubResponseEntity: GitHubResponsesEntity,
+        expiredTime: Boolean
+    ) {
+        given(dao.getResponseEntity(request.hashCode())).willReturn(Single.just(gitHubResponseEntity))
+        if (expiredTime) {
+            given(gitHubResponseEntity.timeStamp).willReturn(EXPIRED_TIME)
+        }
     }
 
     private fun whenAskingForCurrentTimeWillReturnDefaultOne() {
@@ -68,6 +101,4 @@ class GitHubRepositoryImplTest : TestBase() {
         given(api.fetchRepositories(organization, page = page)).willReturn(response)
 
     }
-
-
 }

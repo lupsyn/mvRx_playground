@@ -46,8 +46,8 @@ class GitHubRepositoryImpl(
         val request = GitHubRepositoryRequest(organization, page)
         return dao.getResponseEntity(request.hashCode())
             .filter { isLocalDataWithinExpiryTime(it.timeStamp) }
-            .map { it.response ?: emptyList() }.toSingle()
-            .onErrorResumeNext { getFromNetworkAndSave(organization, page) }
+            .map { it.response ?: emptyList() }
+            .toSingle()
     }
 
     private fun isLocalDataWithinExpiryTime(timeStamp: Long, expiry: Long = EXPIRY_TIME_STANDARD): Boolean =
