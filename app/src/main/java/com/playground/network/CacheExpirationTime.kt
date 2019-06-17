@@ -1,7 +1,5 @@
 package com.playground.network
 
-import android.text.format.DateUtils
-
 object CacheExpirationTime {
 
     private const val SECONDS_IN_MINUTE = 60

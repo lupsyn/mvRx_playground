@@ -4,18 +4,18 @@ import com.playground.data.db.GitHubResponsesDao
 import com.playground.data.db.GitHubResponsesEntity
 import com.playground.data.db.utils.TimeProvider
 import com.playground.models.GitRepo
+import com.playground.network.CacheExpirationTime.EXPIRY_TIME_STANDARD
 import com.playground.network.GitHubService
 import io.reactivex.Single
 
 class GitHubRepositoryImpl(
-    val dao: GitHubResponsesDao,
-    val api: GitHubService,
-    val timeProvider: TimeProvider
+    private val dao: GitHubResponsesDao,
+    private val api: GitHubService,
+    private val timeProvider: TimeProvider
 ) : GitHubRepository {
 
     override fun fetchRepositories(organization: String, page: Int): Single<List<GitRepo>> {
-        val request = GitHubRepositoryRequest(organization, page)
-        return getFromLocalStorage(request.hashCode())
+        return getFromLocalStorage(organization, page)
             .onErrorResumeNext {
                 getFromNetworkAndSave(organization, page)
             }
@@ -39,13 +39,18 @@ class GitHubRepositoryImpl(
     }
 
     private fun getFromLocalStorage(
-        hashCode: Int
+        organization: String,
+        page: Int
     ): Single<List<GitRepo>> {
-        return dao.getResponseEntity(hashCode)
-            .map {
-                it.response ?: emptyList()
-            }
+        val request = GitHubRepositoryRequest(organization, page)
+        return dao.getResponseEntity(request.hashCode())
+            .filter { isLocalDataWithinExpiryTime(it.timeStamp) }
+            .map { it.response ?: emptyList() }.toSingle()
+            .onErrorResumeNext { getFromNetworkAndSave(organization, page) }
     }
+
+    private fun isLocalDataWithinExpiryTime(timeStamp: Long, expiry: Long = EXPIRY_TIME_STANDARD): Boolean =
+        System.currentTimeMillis() - timeStamp < expiry
 
     data class GitHubRepositoryRequest(val organization: String, val page: Int)
 }
