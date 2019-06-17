@@ -9,15 +9,13 @@ import retrofit2.http.Query
 
 interface GitHubService {
 
-    //https://developer.github.com/v3/
-
-    @GET("/{organization}/repos?type=sources")
-    fun fetchORgRepositories(
+    @GET("/orgs/{organization}/repos?")
+    fun fetchRepositories(
         @Path("organization") organization: String,
         @Query("type") type: String? = null,
         @Query("query") query: String? = null,
         @Query("page") page: Int = 0,
-        @Query("per_page") limit: Int = MvRxApplication.REPO_PER_PAGE
-    ): Observable<GitReposResponse>
+        @Query("per_page") per_page: Int = MvRxApplication.REPOS_PER_PAGE
+    ): Observable<List<GitReposResponse>>
 
 }

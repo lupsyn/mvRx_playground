@@ -3,10 +3,12 @@ import com.playground.Libs
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android-extensions'
+
 kapt {
     correctErrorTypes = true
 }
-apply plugin: 'kotlin-android-extensions'
+
 androidExtensions {
     experimental = true
 }
@@ -96,7 +98,14 @@ dependencies {
     implementation Libs.Google.material
 
     implementation Libs.Moshi.moshi
+    implementation Libs.Moshi.moshi_kotlin
     kapt Libs.Moshi.moshi_kotlin_code_gen
+
+    implementation Libs.Koin.koin
+    implementation Libs.Koin.koinViewModel
+    implementation Libs.Koin.koinScope
+
+    implementation Libs.OkHttp.loggingInterceptor
 
     implementation Libs.Epoxy.epoxy
     implementation Libs.Epoxy.paging

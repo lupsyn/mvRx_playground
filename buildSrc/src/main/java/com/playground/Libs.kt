@@ -2,6 +2,7 @@ package com.playground
 
 object Libs {
     val androidGradlePlugin = "com.android.tools.build:gradle:3.4.1"
+
     val dexcountGradlePlugin = "com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.8.6"
 
     val mvRx = "com.airbnb.android:mvrx:0.7.2"
@@ -11,6 +12,7 @@ object Libs {
     val junit = "junit:junit:4.12"
 
     val robolectric = "org.robolectric:robolectric:4.2"
+
     val mockitoKotlin = "com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0"
 
     object Google {
@@ -96,7 +98,6 @@ object Libs {
         val moshiConverter = "com.squareup.retrofit2:converter-moshi:$version"
     }
 
-
     object Moshi {
         private const val version = "1.6.0"
         val moshi = "com.squareup.moshi:moshi:$version"
@@ -114,5 +115,12 @@ object Libs {
         val paging = "com.airbnb.android:epoxy-paging:$version"
         val dataBinding = "com.airbnb.android:epoxy-databinding:$version"
         val processor = "com.airbnb.android:epoxy-processor:$version"
+    }
+
+    object Koin {
+        private const val version = "2.0.1"
+        val koin = "org.koin:koin-android:$version"
+        val koinViewModel = "org.koin:koin-androidx-viewmodel:$version"
+        val koinScope = "org.koin:koin-androidx-scope:$version"
     }
 }
