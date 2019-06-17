@@ -6,6 +6,7 @@ import com.playground.data.db.utils.TimeProvider
 import com.playground.models.GitRepo
 import com.playground.network.CacheExpirationTime.EXPIRY_TIME_STANDARD
 import com.playground.network.GitHubService
+import com.playground.utils.EspressoIdlingResource
 import io.reactivex.Single
 
 class GitHubRepositoryImpl(
@@ -16,9 +17,9 @@ class GitHubRepositoryImpl(
 
     override fun fetchRepositories(organization: String, page: Int): Single<List<GitRepo>> {
         return getFromLocalStorage(organization, page)
-            .onErrorResumeNext {
-                getFromNetworkAndSave(organization, page)
-            }
+            .doOnSubscribe { EspressoIdlingResource.increment() }
+            .doAfterTerminate { EspressoIdlingResource.decrement() }
+            .onErrorResumeNext { getFromNetworkAndSave(organization, page) }
     }
 
     private fun getFromNetworkAndSave(

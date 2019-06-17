@@ -118,6 +118,8 @@ dependencies {
     implementation Libs.AndroidX.Room.rxjava2
     kapt Libs.AndroidX.Room.compiler
 
+    implementation Libs.AndroidX.Test.espressoIdlingResources
+
     testImplementation Libs.junit
     testImplementation Libs.robolectric
     testImplementation Libs.mockitoKotlin

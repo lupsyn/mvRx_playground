@@ -59,6 +59,7 @@ object Libs {
             val rules = "androidx.test:rules:1.1.1"
 
             val espressoCore = "androidx.test.espresso:espresso-core:3.1.1"
+            val espressoIdlingResources="androidx.test.espresso:espresso-idling-resource:3.1.1"
         }
 
         val archCoreTesting = "androidx.arch.core:core-testing:2.0.0"
