@@ -1,6 +1,6 @@
 package com.playground.models
 
-data class GitReposResponse(
+data class GitRepo(
     val private: Boolean?,
     val archive_url: String?,
     val archived: Boolean?,

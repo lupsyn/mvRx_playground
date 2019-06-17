@@ -74,6 +74,8 @@ dependencies {
     implementation Libs.Coroutines.rx2
     implementation Libs.Coroutines.android
 
+    implementation Libs.Google.gson
+
     implementation Libs.AndroidX.Lifecycle.extensions
 
     implementation Libs.AndroidX.appcompat
@@ -111,6 +113,10 @@ dependencies {
     implementation Libs.Epoxy.paging
     implementation Libs.Epoxy.dataBinding
     kapt Libs.Epoxy.processor
+
+    implementation Libs.AndroidX.Room.runtime
+    implementation Libs.AndroidX.Room.rxjava2
+    kapt Libs.AndroidX.Room.compiler
 
     testImplementation Libs.junit
     testImplementation Libs.robolectric

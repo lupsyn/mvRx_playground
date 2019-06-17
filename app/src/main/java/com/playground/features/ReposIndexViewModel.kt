@@ -4,14 +4,17 @@ import com.airbnb.mvrx.*
 import com.playground.MvRxApplication.Companion.ORGANIZATION
 import com.playground.MvRxApplication.Companion.REPOS_PER_PAGE
 import com.playground.core.MvRxViewModel
-import com.playground.models.GitReposResponse
+import com.playground.data.GitHubRepositoryImpl
+import com.playground.data.db.MvRxDb
+import com.playground.data.db.utils.TimeProvider
+import com.playground.models.GitRepo
 import com.playground.network.GitHubService
 import io.reactivex.schedulers.Schedulers
 import org.koin.android.ext.android.inject
 
 data class ReposIndexState(
-    val repos: List<GitReposResponse> = emptyList(),
-    val request: Async<List<GitReposResponse>> = Uninitialized
+    val repos: List<GitRepo> = emptyList(),
+    val request: Async<List<GitRepo>> = Uninitialized
 ) : MvRxState
 
 /**
@@ -19,7 +22,7 @@ data class ReposIndexState(
  */
 class ReposIndexViewModel(
     initialState: ReposIndexState,
-    private val gitHubService: GitHubService
+    private val dataSource: GitHubRepositoryImpl
 ) : MvRxViewModel<ReposIndexState>(initialState) {
 
     init {
@@ -29,12 +32,10 @@ class ReposIndexViewModel(
     fun fetchNextPage() = withState { state ->
         if (state.request is Loading) return@withState
 
-        gitHubService
+        dataSource
             .fetchRepositories(
                 organization = ORGANIZATION,
-                type = "",
-                page = state.repos.size / REPOS_PER_PAGE + 1,
-                per_page = REPOS_PER_PAGE
+                page = state.repos.size / REPOS_PER_PAGE + 1
             )
             .subscribeOn(Schedulers.io())
             .execute { copy(request = it, repos = repos + (it.invoke() ?: emptyList())) }
@@ -50,7 +51,14 @@ class ReposIndexViewModel(
 
         override fun create(viewModelContext: ViewModelContext, state: ReposIndexState): ReposIndexViewModel {
             val service: GitHubService by viewModelContext.activity.inject()
-            return ReposIndexViewModel(state, service)
+            val db: MvRxDb   by viewModelContext.activity.inject()
+
+            val repository = GitHubRepositoryImpl(
+                db.gitHubResponsesDao(),
+                service,
+                TimeProvider()
+            )
+            return ReposIndexViewModel(state, repository)
         }
     }
 }
