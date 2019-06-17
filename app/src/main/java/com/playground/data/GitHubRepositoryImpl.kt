@@ -36,6 +36,8 @@ class GitHubRepositoryImpl(
                 entity.timeStamp = timeProvider.currentTime()
             }
             dao.saveResponseEntity(entityToSave)
+        }.onErrorResumeNext {
+            Single.error(it)
         }
     }
 
