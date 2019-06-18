@@ -25,12 +25,8 @@ class ReposIndexFragment : BaseFragment() {
      */
     private val viewModel: ReposIndexViewModel by fragmentViewModel()
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        /**
-         * Use viewModel.subscribe to listen for changes. The parameter is a shouldUpdate
-         * function that is given the old state and new state and returns whether or not to
-         * call the subscriber. onSuccess, onFail, and propertyWhitelist ship with MvRx.
-         */
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         viewModel.asyncSubscribe(ReposIndexState::request, onFail = { error ->
             Snackbar.make(coordinatorLayout, "Repos request failed.", Snackbar.LENGTH_LONG)
                 .setAction(R.string.dismiss) {}
