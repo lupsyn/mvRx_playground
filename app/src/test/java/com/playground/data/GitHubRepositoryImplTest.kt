@@ -17,13 +17,14 @@ import org.mockito.BDDMockito.*
 import org.mockito.Mock
 
 private const val EXPIRED_TIME = (40 * MINUTE_TO_MILLISECONDS).toLong()
-private const val CURRENT_TIME = (10 * MINUTE_TO_MILLISECONDS).toLong()
 private const val DEFAULT_PAGE = 0
 private const val ORGANIZATION = "square"
 
 class GitHubRepositoryImplTest : TestBase() {
+
     @Mock
     private lateinit var dao: GitHubResponsesDao
+
     @Mock
     private lateinit var api: GitHubService
     @Mock
@@ -35,6 +36,7 @@ class GitHubRepositoryImplTest : TestBase() {
 
     private lateinit var underTest: GitHubRepositoryImpl
     private val request = GitHubRepositoryImpl.GitHubRepositoryRequest(ORGANIZATION, DEFAULT_PAGE)
+    private val currentTime by lazy { System.currentTimeMillis() }
 
     @Before
     fun setUp() {
@@ -60,7 +62,7 @@ class GitHubRepositoryImplTest : TestBase() {
     }
 
     @Test
-    fun shouldGoWithErrorIfDBEmpty() {
+    fun shouldFetchFromNetworkIfDbCallFails() {
         whenAskingForCurrentTimeWillReturnDefaultOne()
         whenSearchThrowException(TestApiErrors.emptyDbError())
         whenAskingForNetworkWillReturn(ORGANIZATION, DEFAULT_PAGE, Single.just(response))
@@ -87,22 +89,29 @@ class GitHubRepositoryImplTest : TestBase() {
         verify(dao).saveResponseEntity(any())
     }
 
+    @Test
+    fun shouldReturnDbEntityIfItsNotExpired() {
+        whenLocalStorageHasSearchResponse(gitHubResponseEntity, expiredTime = false)
+        given(gitHubResponseEntity.response).willReturn(response)
+
+        underTest.fetchRepositories(ORGANIZATION, DEFAULT_PAGE)
+            .test()
+            .assertValue(response)
+            .assertNoErrors()
+            .assertComplete()
+    }
+
     private fun whenSearchThrowException(error: Throwable) {
         given(dao.getResponseEntity(anyInt())).willReturn(Single.error(error))
     }
 
-    private fun whenLocalStorageHasSearchResponse(
-        gitHubResponseEntity: GitHubResponsesEntity,
-        expiredTime: Boolean
-    ) {
+    private fun whenLocalStorageHasSearchResponse(gitHubResponseEntity: GitHubResponsesEntity, expiredTime: Boolean) {
         given(dao.getResponseEntity(request.hashCode())).willReturn(Single.just(gitHubResponseEntity))
-        if (expiredTime) {
-            given(gitHubResponseEntity.timeStamp).willReturn(EXPIRED_TIME)
-        }
+        given(gitHubResponseEntity.timeStamp).willReturn(if (expiredTime) EXPIRED_TIME else currentTime)
     }
 
     private fun whenAskingForCurrentTimeWillReturnDefaultOne() {
-        given(timeProvider.currentTime()).willReturn(CURRENT_TIME)
+        given(timeProvider.currentTime()).willReturn(currentTime)
     }
 
     private fun whenAskingForNetworkWillReturn(
