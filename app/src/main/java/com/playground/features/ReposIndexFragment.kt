@@ -30,7 +30,7 @@ class ReposIndexFragment : BaseFragment() {
          * call the subscriber. onSuccess, onFail, and propertyWhitelist ship with MvRx.
          */
         viewModel.asyncSubscribe(ReposIndexState::request, onFail = { error ->
-            Snackbar.make(coordinatorLayout, "Repos request failed.", Snackbar.LENGTH_INDEFINITE).show()
+            Snackbar.make(coordinatorLayout, "Repos request failed.", Snackbar.LENGTH_LONG).show()
             Log.w(TAG, "Repos request failed", error)
         })
     }
