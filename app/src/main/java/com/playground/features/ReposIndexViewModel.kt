@@ -51,7 +51,7 @@ class ReposIndexViewModel(
 
         override fun create(viewModelContext: ViewModelContext, state: ReposIndexState): ReposIndexViewModel {
             val service: GitHubService by viewModelContext.activity.inject()
-            val db: MvRxDb   by viewModelContext.activity.inject()
+            val db: MvRxDb  by viewModelContext.activity.inject()
 
             val repository = GitHubRepositoryImpl(
                 db.gitHubResponsesDao(),

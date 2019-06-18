@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">mvrx</string>
+    <string name="click_to_retry">Click to retry</string>
 </resources>
