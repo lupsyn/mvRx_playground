@@ -17,7 +17,7 @@ android {
     compileSdkVersion 28
 
     defaultConfig {
-        applicationId "app.punk"
+        applicationId "com.playground.mvrx"
         minSdkVersion buildConfig.minSdk
         targetSdkVersion buildConfig.targetSdk
         versionCode 1
