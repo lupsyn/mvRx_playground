@@ -1,5 +1,9 @@
 package com.playground.models
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
 data class GitRepo(
     val private: Boolean?,
     val archive_url: String?,
@@ -75,4 +79,4 @@ data class GitRepo(
     val url: String?,
     val watchers: Int?,
     val watchers_count: Int?
-)
+) : Parcelable

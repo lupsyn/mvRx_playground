@@ -13,7 +13,7 @@ import io.reactivex.schedulers.Schedulers
 import org.koin.android.ext.android.inject
 
 data class ReposIndexState(
-    val repos: List<GitRepo> = emptyList(),
+    @PersistState val repos: List<GitRepo> = emptyList(),
     val request: Async<List<GitRepo>> = Uninitialized
 ) : MvRxState
 
