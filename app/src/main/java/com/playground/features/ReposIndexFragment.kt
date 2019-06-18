@@ -6,11 +6,13 @@ import android.view.View
 import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.fragmentViewModel
 import com.google.android.material.snackbar.Snackbar
+import com.playground.R
 import com.playground.core.BaseFragment
 import com.playground.core.simpleController
 import com.playground.features.views.basicRow
 import com.playground.features.views.fullScreenMessageView
 import com.playground.features.views.loadingRow
+import kotlinx.android.synthetic.main.full_screen_message.view.*
 
 private const val TAG = "ReposIndexFragment"
 
@@ -30,7 +32,9 @@ class ReposIndexFragment : BaseFragment() {
          * call the subscriber. onSuccess, onFail, and propertyWhitelist ship with MvRx.
          */
         viewModel.asyncSubscribe(ReposIndexState::request, onFail = { error ->
-            Snackbar.make(coordinatorLayout, "Repos request failed.", Snackbar.LENGTH_LONG).show()
+            Snackbar.make(coordinatorLayout, "Repos request failed.", Snackbar.LENGTH_LONG)
+                .setAction(R.string.dismiss) {}
+                .show()
             Log.w(TAG, "Repos request failed", error)
         })
     }
