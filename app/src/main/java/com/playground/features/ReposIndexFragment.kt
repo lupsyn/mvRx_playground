@@ -27,7 +27,7 @@ class ReposIndexFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.asyncSubscribe(ReposIndexState::request, onFail = { error ->
+        viewModel.asyncSubscribe(ReposIndexState::request, uniqueOnly = true , onFail = { error ->
             Snackbar.make(coordinatorLayout, "Repos request failed.", Snackbar.LENGTH_LONG)
                 .setAction(R.string.dismiss) {}
                 .show()
