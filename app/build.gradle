@@ -88,7 +88,7 @@ dependencies {
     implementation Libs.AndroidX.Navigation.fragment
     implementation Libs.AndroidX.Navigation.ui
 
-    implementation Libs.mvRx
+    implementation Libs.MvRx.core
 
     implementation Libs.RxJava.rxJava
     implementation Libs.RxJava.rxKotlin
@@ -127,5 +127,5 @@ dependencies {
     testImplementation Libs.AndroidX.Test.runner
     testImplementation Libs.AndroidX.Test.rules
     testImplementation Libs.AndroidX.Test.espressoCore
-
+    testImplementation Libs.MvRx.test
 }

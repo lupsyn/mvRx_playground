@@ -2,7 +2,6 @@ package com.playground.features
 
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.fragmentViewModel
 import com.google.android.material.snackbar.Snackbar
@@ -12,7 +11,7 @@ import com.playground.core.simpleController
 import com.playground.features.views.basicRow
 import com.playground.features.views.fullScreenMessageView
 import com.playground.features.views.loadingRow
-import kotlinx.android.synthetic.main.full_screen_message.view.*
+import java.util.*
 
 private const val TAG = "ReposIndexFragment"
 
@@ -27,12 +26,15 @@ class ReposIndexFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.asyncSubscribe(ReposIndexState::request, uniqueOnly = true , onFail = { error ->
-            Snackbar.make(coordinatorLayout, "Repos request failed.", Snackbar.LENGTH_LONG)
-                .setAction(R.string.dismiss) {}
-                .show()
-            Log.w(TAG, "Repos request failed", error)
-        })
+        viewModel.asyncSubscribe(
+            ReposIndexState::request,
+            deliveryMode = uniqueOnly(UUID.randomUUID().toString()),
+            onFail = { error ->
+                Snackbar.make(coordinatorLayout, "Repos request failed.", Snackbar.LENGTH_LONG)
+                    .setAction(R.string.dismiss) {}
+                    .show()
+                Log.w(TAG, "Repos request failed", error)
+            })
     }
 
     override fun epoxyController() = simpleController(viewModel) { state ->

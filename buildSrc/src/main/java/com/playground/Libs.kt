@@ -5,7 +5,6 @@ object Libs {
 
     val dexcountGradlePlugin = "com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.8.6"
 
-    val mvRx = "com.airbnb.android:mvrx:0.7.2"
 
     val rxLint = "nl.littlerobots.rxlint:rxlint:1.7.3"
 
@@ -15,9 +14,15 @@ object Libs {
 
     val mockitoKotlin = "com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0"
 
-    object Mockito{
-        private const val mockitoVersion="2.24.0"
-        val core ="org.mockito:mockito-core:${mockitoVersion}"
+    object MvRx {
+        private const val mvRxVersion = "1.0.0"
+        val core = "com.airbnb.android:mvrx:$mvRxVersion"
+        val test = "com.airbnb.android:mvrx-testing:$mvRxVersion"
+    }
+
+    object Mockito {
+        private const val mockitoVersion = "2.24.0"
+        val core = "org.mockito:mockito-core:${mockitoVersion}"
     }
 
     object Google {
@@ -64,7 +69,7 @@ object Libs {
             val rules = "androidx.test:rules:1.1.1"
 
             val espressoCore = "androidx.test.espresso:espresso-core:3.1.1"
-            val espressoIdlingResources="androidx.test.espresso:espresso-idling-resource:3.1.1"
+            val espressoIdlingResources = "androidx.test.espresso:espresso-idling-resource:3.1.1"
         }
 
         val archCoreTesting = "androidx.arch.core:core-testing:2.0.0"

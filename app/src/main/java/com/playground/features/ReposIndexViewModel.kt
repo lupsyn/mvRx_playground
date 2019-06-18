@@ -4,6 +4,7 @@ import com.airbnb.mvrx.*
 import com.playground.MvRxApplication.Companion.ORGANIZATION
 import com.playground.MvRxApplication.Companion.REPOS_PER_PAGE
 import com.playground.core.MvRxViewModel
+import com.playground.data.GitHubRepository
 import com.playground.data.GitHubRepositoryImpl
 import com.playground.data.db.MvRxDb
 import com.playground.data.db.utils.TimeProvider
@@ -22,7 +23,7 @@ data class ReposIndexState(
  */
 class ReposIndexViewModel(
     initialState: ReposIndexState,
-    private val dataSource: GitHubRepositoryImpl
+    private val dataSource: GitHubRepository
 ) : MvRxViewModel<ReposIndexState>(initialState) {
 
     init {
