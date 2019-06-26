@@ -64,15 +64,23 @@ object Libs {
         }
 
         object Test {
-            val core = "androidx.test:core:1.1.0"
-            val runner = "androidx.test:runner:1.1.1"
-            val rules = "androidx.test:rules:1.1.1"
+            private const val espressoVersion = "3.2.0"
+            private const val androidTestVersion = "1.2.0"
+            private const val junitAssertionsVersion ="1.1.0"
+            private const val thruthVersions="1.1.0"
+            private const val archCoreVersion="2.0.0-rc01"
 
-            val espressoCore = "androidx.test.espresso:espresso-core:3.1.1"
-            val espressoIdlingResources = "androidx.test.espresso:espresso-idling-resource:3.1.1"
+            val core = "androidx.test:core:$androidTestVersion"
+            val runner = "androidx.test:runner:$androidTestVersion"
+            val rules = "androidx.test:rules:$androidTestVersion"
+            var archCore = "androidx.arch.core:core-testing:$archCoreVersion"
+
+            val espressoCore = "androidx.test.espresso:espresso-core:$espressoVersion"
+            val espressoContrib= "androidx.test.espresso:espresso-core:$espressoVersion"
+            val espressoIdlingResources = "androidx.test.espresso:espresso-idling-resource:$espressoVersion"
+            val junitAssertions = "androidx.test.ext:junit:$junitAssertionsVersion"
+            val thruth = "androidx.test.ext:truth:$thruthVersions"
         }
-
-        val archCoreTesting = "androidx.arch.core:core-testing:2.0.0"
 
         val constraintlayout = "androidx.constraintlayout:constraintlayout:2.0.0-alpha3"
 
@@ -91,6 +99,13 @@ object Libs {
             val compiler = "androidx.room:room-compiler:$version"
         }
     }
+    object MockWebServer {
+        private const val version = "3.12.1"
+
+        val webServer ="com.squareup.okhttp3:mockwebserver:3.12.1"
+    }
+
+
 
     object RxJava {
         val rxJava = "io.reactivex.rxjava2:rxjava:2.2.6"

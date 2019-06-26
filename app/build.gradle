@@ -128,4 +128,17 @@ dependencies {
     testImplementation Libs.AndroidX.Test.rules
     testImplementation Libs.AndroidX.Test.espressoCore
     testImplementation Libs.MvRx.test
+
+    //Instrumentation tests
+    androidTestImplementation Libs.AndroidX.Test.core
+    androidTestImplementation Libs.AndroidX.Test.runner
+    androidTestImplementation Libs.AndroidX.Test.rules
+    androidTestImplementation Libs.AndroidX.Test.archCore
+    androidTestImplementation Libs.AndroidX.Test.junitAssertions
+    androidTestImplementation Libs.AndroidX.Test.thruth
+    androidTestImplementation Libs.AndroidX.Test.espressoCore
+    androidTestImplementation Libs.AndroidX.Test.espressoContrib
+    androidTestImplementation Libs.AndroidX.Test.espressoIdlingResources
+
+    androidTestImplementation Libs.MockWebServer.webServer
 }
