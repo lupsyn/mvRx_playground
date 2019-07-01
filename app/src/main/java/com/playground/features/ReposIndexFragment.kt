@@ -11,6 +11,7 @@ import com.playground.core.simpleController
 import com.playground.features.views.basicRow
 import com.playground.features.views.fullScreenMessageView
 import com.playground.features.views.loadingRow
+import com.playground.utils.EspressoIdlingResource
 import java.util.*
 
 private const val TAG = "ReposIndexFragment"
@@ -38,6 +39,7 @@ class ReposIndexFragment : BaseFragment() {
     }
 
     override fun epoxyController() = simpleController(viewModel) { state ->
+        EspressoIdlingResource.increment()
         state.repos.forEach {
             basicRow {
                 id(it.id)
@@ -61,5 +63,6 @@ class ReposIndexFragment : BaseFragment() {
                 onBind { _, _, _ -> viewModel.fetchNextPage() }
             }
         }
+        EspressoIdlingResource.decrement()
     }
 }

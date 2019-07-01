@@ -1,9 +1,14 @@
 import com.playground.Libs
 
+import java.util.regex.Matcher
+import java.util.regex.Pattern
+
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
+
+Pattern patternOfUnitTestTask = Pattern.compile("^test(.+?)(Minified)?(?:Debug|Release)")
 
 kapt {
     correctErrorTypes = true
@@ -12,6 +17,7 @@ kapt {
 androidExtensions {
     experimental = true
 }
+
 
 android {
     compileSdkVersion 28
@@ -22,7 +28,7 @@ android {
         targetSdkVersion buildConfig.targetSdk
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "com.playground.base.TestInstrumentationRunner"
     }
 
     buildTypes {
@@ -37,6 +43,41 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    sourceSets.all { sourceSet ->
+        Matcher testTaskMatcher = patternOfUnitTestTask.matcher(sourceSet.name)
+        if (testTaskMatcher.find()) {
+            def variantName = testTaskMatcher.group(1)
+            println "Added androidTest sourceSets to $sourceSet.name (variant name = ${variantName}"
+            sourceSet.java.srcDirs += "src/androidTest${variantName}/java"
+            sourceSet.kotlin.srcDirs += "src/androidTest${variantName}/java"
+        }
+    }
+
+    sourceSets {
+        String sharedTestDir = 'src/sharedTest/java'
+
+        test {
+            debug.assets.srcDirs += files("$projectDir/schemas".toString())
+            debug.assets.srcDirs += files("$projectDir/assets".toString())
+            debug.assets.srcDirs += files("$projectDir/raw".toString())
+
+            java.srcDirs += 'src/androidTest/java'
+            kotlin.srcDirs += 'src/androidTest/java'
+            java.srcDirs += sharedTestDir
+            kotlin.srcDirs += sharedTestDir
+
+            test.resources.srcDirs += 'src/test/resources'
+        }
+
+        androidTest {
+            assets.srcDirs += files("$projectDir/schemas".toString())
+            test.resources.srcDirs += 'src/test/resources'
+            resources.srcDirs += ['src/test/resources']
+            java.srcDirs += sharedTestDir
+            kotlin.srcDirs += sharedTestDir
+        }
+    }
+
     lintOptions {
         // Disable lintVital. Not needed since lint is run on CI
         checkReleaseBuilds false
@@ -49,6 +90,28 @@ android {
     }
 
     testOptions {
+        unitTests.all {
+            include '**/*Tests.class'
+            include '**/*Test.class'
+
+            useJUnit {
+                //With this category we can annotate tests will not run on JVM
+                //due conflicts or other Robolectric Issue, but can run without any issue on Espresso or
+                //normal device.
+                excludeCategories 'com.playground.utils.DoNotRunOnJvm'
+            }
+            ignoreFailures false
+
+            // use afterTest to listen to the test execution results
+            afterTest { descriptor, result ->
+                println "Executing test for ${descriptor.name} with result: ${result.resultType}"
+            }
+            systemProperty 'robolectric.logging.enabled', 'true'
+
+            jvmArgs '-noverify'
+            maxHeapSize = "2g"
+        }
+
         unitTests {
             includeAndroidResources = true
         }

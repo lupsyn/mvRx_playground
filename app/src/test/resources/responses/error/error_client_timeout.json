@@ -1,0 +1,7 @@
+{
+  "error": {
+    "status": 408,
+    "message": "Client timeout",
+    "code": 408
+  }
+}

@@ -9,7 +9,7 @@ import com.playground.network.CacheExpirationTime.MINUTE_TO_MILLISECONDS
 import com.playground.network.GitHubService
 import com.playground.utils.TestApiErrors
 import com.playground.utils.TestApiErrors.AN_ERROR
-import com.tui.tda.test.KotlinTypeSafeMatchers.any
+import com.playground.utils.KotlinTypeSafeMatchers.any
 import io.reactivex.Single
 import org.junit.Before
 import org.junit.Test

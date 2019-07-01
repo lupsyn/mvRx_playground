@@ -76,7 +76,7 @@ object Libs {
             var archCore = "androidx.arch.core:core-testing:$archCoreVersion"
 
             val espressoCore = "androidx.test.espresso:espresso-core:$espressoVersion"
-            val espressoContrib= "androidx.test.espresso:espresso-core:$espressoVersion"
+            val espressoContrib= "androidx.test.espresso:espresso-contrib:$espressoVersion"
             val espressoIdlingResources = "androidx.test.espresso:espresso-idling-resource:$espressoVersion"
             val junitAssertions = "androidx.test.ext:junit:$junitAssertionsVersion"
             val thruth = "androidx.test.ext:truth:$thruthVersions"

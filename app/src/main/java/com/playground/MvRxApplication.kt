@@ -6,13 +6,12 @@ import com.playground.injection.networkModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
-class MvRxApplication : Application() {
+open class MvRxApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
 
         startKoin {
-            // declare used Android context
             androidContext(this@MvRxApplication)
             modules(listOf(networkModule, dbModule))
         }
