@@ -9,6 +9,8 @@
 
     <TextView
             android:id="@+id/title"
+            android:minHeight="40dp"
+            android:minWidth="40dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="@dimen/padding_horizontal"
@@ -20,6 +22,8 @@
 
     <TextView
             android:id="@+id/subtitle"
+            android:minHeight="40dp"
+            android:minWidth="40dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="@dimen/padding_horizontal"
@@ -31,6 +35,8 @@
 
     <TextView
             android:id="@+id/description"
+            android:minHeight="40dp"
+            android:minWidth="40dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="@dimen/padding_horizontal"

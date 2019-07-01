@@ -5,7 +5,6 @@ import androidx.test.espresso.matcher.ViewMatchers
 import com.playground.R
 import com.playground.utils.assertions.RecyclerViewAssertions.assertRecyclerViewMatchersInPositions
 import com.playground.utils.assertions.RecyclerViewAssertions.assertRecyclerViewSize
-import com.playground.utils.assertions.ViewAssertions.assertDisplayingText
 import com.playground.utils.assertions.ViewAssertions.assertDisplayingViews
 import com.playground.utils.assertions.ViewAssertions.hasDescendantWithText
 import org.hamcrest.Matcher
@@ -15,7 +14,7 @@ class RepositoriesListScreenAssertions {
     fun withSuccessfullyLoadedFirstPageItem() {
         try {
             //TODO: sync epoxy controller
-            Thread.sleep(1000)
+            Thread.sleep(DELAY)
         } catch (e: Throwable) {
             e.printStackTrace()
         }
@@ -54,4 +53,9 @@ class RepositoriesListScreenAssertions {
         assertRecyclerViewSize(R.id.recycler_view, 1)
         assertDisplayingViews(ViewMatchers.withText("An error happened loading repos. Click to retry."))
     }
+
+    companion object {
+        const val DELAY = 4000.toLong()
+    }
+
 }

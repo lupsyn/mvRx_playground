@@ -89,7 +89,11 @@ android {
         disable 'GradleCompatible', 'FontValidationError'
     }
 
+
     testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
         unitTests.all {
             include '**/*Tests.class'
             include '**/*Test.class'
@@ -110,10 +114,6 @@ android {
 
             jvmArgs '-noverify'
             maxHeapSize = "2g"
-        }
-
-        unitTests {
-            includeAndroidResources = true
         }
     }
 
@@ -191,6 +191,12 @@ dependencies {
     testImplementation Libs.AndroidX.Test.rules
     testImplementation Libs.AndroidX.Test.espressoCore
     testImplementation Libs.MvRx.test
+    testImplementation Libs.MockWebServer.webServer
+    testImplementation Libs.AndroidX.Test.espressoCore
+    testImplementation Libs.AndroidX.Test.espressoContrib
+    testImplementation Libs.AndroidX.Test.espressoIdlingResources
+    testImplementation Libs.AndroidX.Test.junitAssertions
+    testImplementation Libs.AndroidX.Test.archCore
 
     //Instrumentation tests
     androidTestImplementation Libs.AndroidX.Test.core

@@ -12,6 +12,7 @@ import com.playground.utils.mockwebserver.MockWebServerRule
 import com.playground.utils.rules.ClearAppDataRule
 import com.playground.utils.rules.RxSchedulersRule
 import com.playground.utils.rules.SyncroniseRxJavaRule
+import org.junit.After
 import org.junit.AfterClass
 import org.junit.Before
 import org.junit.Rule
@@ -19,6 +20,7 @@ import org.junit.rules.RuleChain
 import org.junit.rules.TestRule
 import org.junit.runner.RunWith
 import org.koin.android.ext.android.inject
+import org.koin.core.context.stopKoin
 
 /**
  * Base class for all UI tests.
@@ -36,9 +38,8 @@ abstract class BaseInstrumentationTestCase {
     lateinit var given: Given
     lateinit var `when`: When
     lateinit var then: Then
-
-    private val applicationContext = getApplicationContext<MvRxTestApplication>()
-    private val db: MvRxDb  by applicationContext.inject()
+    val applicationContext = getApplicationContext<MvRxTestApplication>()
+    val db: MvRxDb  by applicationContext.inject()
 
     @Before
     @CallSuper
@@ -46,6 +47,13 @@ abstract class BaseInstrumentationTestCase {
         given = Given(serverRule, db)
         `when` = When()
         then = Then()
+    }
+
+    @After
+    fun tearDown() {
+        if (!SystemUtils.isART()) {
+            stopKoin()
+        }
     }
 
     companion object {

@@ -17,6 +17,5 @@ class ClearAppDataRule : ExternalResource() {
 
     override fun before() {
         super.before()
-        db.clearAllTables()
     }
 }

@@ -1,14 +1,15 @@
 package com.playground.base
 
+import androidx.test.core.app.ApplicationProvider
 import com.playground.MvRxApplication
 import com.playground.injection.dbModule
-import com.playground.injection.networkModule
 import com.playground.network.GitHubService
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.GlobalContext
 import org.koin.core.context.startKoin
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -19,9 +20,8 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 class MvRxTestApplication : MvRxApplication() {
 
     override fun onCreate() {
-
         startKoin {
-            androidContext(this@MvRxTestApplication)
+            androidContext(ApplicationProvider.getApplicationContext<MvRxTestApplication>())
             modules(listOf(networkTestModule, dbModule))
         }
     }

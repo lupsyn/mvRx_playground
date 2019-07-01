@@ -15,7 +15,9 @@ class UserActions {
     fun launchesTheApp() {
 
         val activityScenario = ActivityScenario.launch(MainActivity::class.java)
+        
         activityScenario.onActivity { onActivity = it }
+
 
         /*
         TODO need to synchornise loading the Google Advertising ID with Espresso.

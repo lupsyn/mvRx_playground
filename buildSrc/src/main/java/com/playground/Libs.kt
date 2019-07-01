@@ -10,7 +10,7 @@ object Libs {
 
     val junit = "junit:junit:4.12"
 
-    val robolectric = "org.robolectric:robolectric:4.2"
+    val robolectric = "org.robolectric:robolectric:4.2.1"
 
     val mockitoKotlin = "com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0"
 
