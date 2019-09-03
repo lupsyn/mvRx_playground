@@ -29,6 +29,12 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "com.playground.base.TestInstrumentationRunner"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
     }
 
     buildTypes {
@@ -192,6 +198,7 @@ dependencies {
     testImplementation Libs.AndroidX.Test.espressoCore
     testImplementation Libs.AndroidX.Test.thruth
     testImplementation Libs.MvRx.test
+    testImplementation Libs.AndroidX.Room.test
     testImplementation Libs.MockWebServer.webServer
     testImplementation Libs.AndroidX.Test.espressoCore
     testImplementation Libs.AndroidX.Test.espressoContrib

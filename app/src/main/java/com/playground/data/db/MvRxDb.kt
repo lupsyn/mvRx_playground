@@ -11,6 +11,5 @@ import androidx.room.RoomDatabase
     version = VERSION
 )
 abstract class MvRxDb : RoomDatabase() {
-
     abstract fun gitHubResponsesDao(): GitHubResponsesDao
 }
