@@ -190,6 +190,7 @@ dependencies {
     testImplementation Libs.AndroidX.Test.runner
     testImplementation Libs.AndroidX.Test.rules
     testImplementation Libs.AndroidX.Test.espressoCore
+    testImplementation Libs.AndroidX.Test.thruth
     testImplementation Libs.MvRx.test
     testImplementation Libs.MockWebServer.webServer
     testImplementation Libs.AndroidX.Test.espressoCore
