@@ -17,6 +17,6 @@ const val VERSION = VERSION_2
 
 val MIGRATION_1_0_TO_2: Migration = object : Migration(VERSION_1, VERSION_2) {
     override fun migrate(database: SupportSQLiteDatabase) {
-        database.execSQL("CREATE TABLE IF NOT EXISTS $GIT_HUB_FAVOURITES (`_id` INTEGER NOT NULL, `favourites` TEXT NOT NULL, PRIMARY KEY(`_id`))")
+        database.execSQL("CREATE TABLE IF NOT EXISTS $GIT_HUB_FAVOURITES (`_id` INTEGER NOT NULL, `favourites` TEXT, PRIMARY KEY(`_id`))")
     }
 }

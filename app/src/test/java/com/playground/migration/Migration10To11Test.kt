@@ -10,7 +10,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 
 /**
- * Test to check migration from room version 1 to room version  2
+ * Test to check migration from room version 1 to room version 2
  */
 class Migration1To2Test : BaseMigrationsTest() {
 
@@ -27,7 +27,7 @@ class Migration1To2Test : BaseMigrationsTest() {
 
         val migratedDb = applyMigration(VERSION_2, MIGRATION_1_0_TO_2)
         assertTrue(
-            "Table git hub  favourites has been created", exist(
+            "Table git hub favourites has been created", exist(
                 migratedDb,
                 GitHubFavouritesEntity.GIT_HUB_FAVOURITES
             )
