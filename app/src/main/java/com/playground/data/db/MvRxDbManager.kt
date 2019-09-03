@@ -10,6 +10,10 @@ class MvRxDbManager(context: Context) {
 
     val database: MvRxDb
 
+    val dbMigrations by lazy {
+        arrayOf(MIGRATION_1_0_TO_2)
+    }
+
     init {
         database = createDatabase(context)
     }
@@ -29,9 +33,12 @@ class MvRxDbManager(context: Context) {
         return if (BuildConfig.DEBUG) {
             Room.databaseBuilder(context, MvRxDb::class.java, DATABASE_NAME)
                 .allowMainThreadQueries()
+                .addMigrations(*dbMigrations)
                 .build()
         } else {
-            return Room.databaseBuilder(context, MvRxDb::class.java, DATABASE_NAME).build()
+            return Room.databaseBuilder(context, MvRxDb::class.java, DATABASE_NAME)
+                .addMigrations(*dbMigrations)
+                .build()
         }
     }
 }

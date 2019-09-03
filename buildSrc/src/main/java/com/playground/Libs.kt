@@ -97,6 +97,7 @@ object Libs {
             val runtime = "androidx.room:room-runtime:$version"
             val rxjava2 = "androidx.room:room-rxjava2:$version"
             val compiler = "androidx.room:room-compiler:$version"
+            val test = "androidx.room:room-testing:$version"
         }
     }
     object MockWebServer {
