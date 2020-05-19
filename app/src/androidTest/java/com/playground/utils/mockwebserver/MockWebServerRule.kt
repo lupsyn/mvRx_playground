@@ -16,29 +16,29 @@ import java.io.IOException
 class MockWebServerRule : ExternalResource() {
 
     private var server: MockWebServer? = null
-    private var dispatcher: MockDispatcher? = null
+    private var mockDispactcher: MockDispatcher? = null
 
     override fun before() {
-        if (dispatcher == null) {
-            dispatcher = MockDispatcher()
+        if (mockDispactcher == null) {
+            mockDispactcher = MockDispatcher()
         }
         if (server == null) {
             server = MockWebServer().also {
                 it.start(SERVER_PORT)
-                it.setDispatcher(dispatcher)
+                it.dispatcher = mockDispactcher as MockDispatcher
             }
         } else {
-            dispatcher = MockDispatcher()
-            server?.setDispatcher(dispatcher)
+            mockDispactcher = MockDispatcher()
+            server?.dispatcher = mockDispactcher as MockDispatcher
         }
     }
 
     fun shutdownServer() {
         try {
             server?.shutdown()
-            dispatcher?.shutdown()
+            mockDispactcher?.shutdown()
             server = null
-            dispatcher = null
+            mockDispactcher = null
         } catch (e: IOException) {
             throw RuntimeException("Failed to shutdown MockWebServer", e)
         }
@@ -57,7 +57,7 @@ class MockWebServerRule : ExternalResource() {
      */
     inner class ResponseSetup(private val responseBuilder: MockResponseBuilder) {
         fun on(requestMatcher: Matcher<in RecordedRequest>) {
-            dispatcher?.responds(requestMatcher, responseBuilder)
+            mockDispactcher?.responds(requestMatcher, responseBuilder)
         }
     }
 
