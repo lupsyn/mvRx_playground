@@ -14,7 +14,7 @@ object RecordedRequestMatchers {
     fun pathContains(path: String): Matcher<RecordedRequest> {
         return object : TypeSafeDiagnosingMatcher<RecordedRequest>() {
             override fun matchesSafely(recordedRequest: RecordedRequest, mismatchDescription: Description): Boolean {
-                return recordedRequest.path.contains(path)
+                return recordedRequest.path!!.contains(path)
             }
 
             override fun describeTo(description: Description) {
